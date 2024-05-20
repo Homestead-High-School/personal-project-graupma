@@ -1,50 +1,71 @@
 import java.util.*;
-
 public class Uno {
-    Map<String, Card> drawingPile;
-    Map<String, Card> discardPile;
-    Map<String, Card> playerHand; 
-    Map<String, Card> compHand;
-    int cardsLeft; //what is this referring to
-    String centerCol; //top of the discard pile- should this be a Card variable instead with centerNum?
-    int centerNum;
+    Stack<Card> drawingPile;
+    Stack<Card> discardPile;
+    ArrayList<Card> playerHand; 
+    ArrayList<Card> compHand;
+    //int cardsLeft; -what is this referring to
+    Card center; //top of the discard pile
     boolean turn; //true= player, false==computer
 
+    //in constructor need to initialize drawing pile to have all 112 cards and then from there go and deal- remove from drawing pile and place in hand
+    public Uno(){
+        drawingPile = new Stack<>(); 
+        String[] colors = {"red", "yellow", "green", "blue"};
 
+        //adds cards to drawingPile in 4 colors and numbers 1-12
+        for(int i = 0; i < colors.length; i++){
+            String col = colors[i];
+            for(int x = 0; i < 13; x++){
+                drawingPile.push(new Card(col, x));
+            }
+        }
+    
+        //add black 13 and 14, color changers - 4 color changers, 4 +4 & change
+        for(int i = 0; i < 5; i++ ){
+            drawingPile.push(new Card("black", 13));
+            drawingPile.push(new Card("black", 14) );
+        }
+        //shuffle the drawing pile and create an empty discard pile
+        shuffle(drawingPile);
+        discardPile = new Stack<>();
 
+        
+        playerHand = new ArrayList<>();
+        compHand = new ArrayList<>();
 
-//in constructor need to initialize drawing pile to have all 112 cards and then from there go and deal- remove from drawing pile and place in hand
-public Uno(){
-    drawingPile= new TreeMap<>(); 
+        //deal 7 cards to both player and computer
+        for(int i=0; i<8; i++){
+            playerHand.add(drawingPile.pop());
+            compHand.add(drawingPile.pop()); 
+        }
+
+        //top card of discard pile
+        discardPile.push(drawingPile.pop());
+        center= discardPile.peek();  
+
+        //players turn first
+        turn=true;
+    }
 
     
-    String[] colors = {"red", "blue", "green", "yellow"};
+//helper method that shuffles the pile
+    private void shuffle(Stack<Card> pile){
+        printDeck();
+        Collections.shuffle(pile);
+        printDeck();
+    }
 
-    //adds cards to drawingPile in 4 colors and numbers 1-12
-    for(int i=0; i<colors.length; i++){
-String col=colors[i];
-for(int i=0; i<13; i++){
-    drawingPile.put(col.substring(0,1) + i, new Card(col, i));
-}
-
-
-}
-//add black 13 and 14, color changers - 4 color changers, 4 +4 & change
-for(int i=0; i<5; i++ ){
-drawingPile.put("b"+ 13, new Card("black", 13));
-drawingPile.put("b"+ 14, new Card("black", 14) );
-}
-
-discardPile= new TreeMap<>();
-
-//still need to deal cards to player and computer. random and then check if thats already been given?
-
-
-
-
-}
-
-
-
-
+    //method that prints all of the cards in the drawing pile
+    public void printDeck(){
+        Stack<Card> stack = new Stack<Card>();
+        System.out.println(drawingPile.isEmpty());
+        while(drawingPile.isEmpty()){
+            System.out.print(drawingPile.peek());
+            stack.push(drawingPile.pop());
+        }
+        while(stack.isEmpty()){
+            drawingPile.push(stack.pop());
+        }
+    } 
 }
