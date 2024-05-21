@@ -25,4 +25,9 @@ public class Card{
     public void setNumber(int num){
         curNum=num; 
     }
+
+    public String toString(){
+        return curColor + " "  + curNum; 
+    }
+
 }
