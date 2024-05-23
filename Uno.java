@@ -154,7 +154,7 @@ public class Uno {
             }
             else{
                 System.out.println("Computer must draw 2 cards");
-            }
+            } 
             drawCard();
             drawCard();
             turn = !turn;
