@@ -69,7 +69,7 @@ public class Uno {
         }
         System.out.println(temp);
     } 
-//prints the players hand
+//prints the players hand 
     public void printPlayerHand(){
        String temp ="Player Hand: [";
         for(int i=0; i<playerHand.size()-1; i++){
@@ -122,4 +122,63 @@ public class Uno {
         else
             compHand.add(drawingPile.pop());
     }
+
+    public void changeCurrentPerson(){
+        if(center.getNumber() <= 9){
+            turn = !turn;
+        }
+        //changes who's turn it is based on the number of the card
+        //skips whoevers turn is next
+        else if(center.getNumber() == 10){
+            if(turn){
+                System.out.println("Player's turn was skipped!");
+            }
+            else{
+                System.out.println("Computer's turn was skipped!");
+            }
+        }
+        //reverses the direction of the game
+        else if(center.getNumber() == 11){
+            if(turn){
+                System.out.println("Direction was reversed back to Player");
+            }
+            else{
+                System.out.println("Direction was reversed back to Computer");
+            }
+        }
+        //forces whoevers next to draw 2 cards, then skips their turn
+        else if(center.getNumber() == 12){
+            turn = !turn;
+            if(turn){
+                System.out.println("Player must draw 2 cards");
+            }
+            else{
+                System.out.println("Computer must draw 2 cards");
+            }
+            drawCard();
+            drawCard();
+            turn = !turn;
+        }
+        //prints out whos turn it currently is
+        if(turn){
+            System.out.println("Player's turn");
+        }
+        else{
+            System.out.println("Computer's turn");
+        }
+    }
+ 
+ 
+    public void drawCard(){
+        if(turn){
+            playerHand.add(drawingPile.pop());
+        }
+        else{
+            compHand.add(drawingPile.pop());
+        }
+    }
+ 
+
+
+    
 }
