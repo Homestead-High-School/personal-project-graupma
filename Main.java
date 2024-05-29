@@ -17,7 +17,15 @@ public class Main {
 
         //begins the actual game
         System.out.println("Commencing sequence...");
-        game.play();
+        while(!game.checkWin()){
+            game.play();
+        }
+        if(game.getTurn()){
+            System.out.println("Player 1 wins!");
+        }
+        else{
+            System.out.println("Player 2 wins!");
+        }
 
         //asks the user if they would like to play again, and keeps asking until the option they enter is equal to either "y" or "n"
         System.out.println("Would you like to play again (y/n)? ");
@@ -33,15 +41,24 @@ public class Main {
             System.out.println("Great! The rules are as follows:");
             Uno nGame = new Uno();
             nGame.rules();
-            nGame.play();
-
-            //reasks the user if they would like to play again, and keeps asking until they enter either "y" or "n"
-            System.out.println("Would you like to play again (y/n)? ");
-            ready = input.nextLine();
-            while(!ready.toLowerCase().equals("y") && !ready.toLowerCase().equals("n")){
-                System.out.println("Invalid option. Would you like to play again (y/n)? ");
-                ready = input.nextLine();
+            while(!nGame.checkWin()){
+                nGame.play();
+                
             }
+            if(nGame.getTurn()){
+                System.out.println("Player 1 wins!");
+            }
+            else{
+                System.out.println("Player 2 wins!");
+            }
+        }
+
+        //reasks the user if they would like to play again, and keeps asking until they enter either "y" or "n"
+        System.out.println("Would you like to play again (y/n)? ");
+        ready = input.nextLine();
+        while(!ready.toLowerCase().equals("y") && !ready.toLowerCase().equals("n")){
+            System.out.println("Invalid option. Would you like to play again (y/n)? ");
+            ready = input.nextLine();
         }
         
         //thanks the user for playing :)
