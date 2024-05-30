@@ -43,6 +43,12 @@ public class Uno {
         discardPile.push(drawingPile.pop());
         center = discardPile.peek();  
 
+        while(center.getColor().equals("wild") || center.getNumber()>9){
+            discardPile.push(drawingPile.pop());
+            center=discardPile.peek();
+        }
+        
+
         System.out.println(center.toString()); 
         //players turn first
         turn = true;
@@ -187,7 +193,7 @@ public class Uno {
     public boolean checkValidCard(Card c, ArrayList<Card> a){
         boolean ret = false;
         for(int i=0; i<a.size(); i++){
-            if((a.get(i).getColor().equals(c.getColor())) && (a.get(i).getNumber() == (c.getNumber())))
+            if((a.get(i).getColor().equals(c.getColor())) || (a.get(i).getNumber() == (c.getNumber())))
             ret=true;
         }
         return ret;
@@ -216,7 +222,7 @@ public class Uno {
     }
 
     public boolean checkValColor(String col){
-        if(col.equals("r") || col.equals("y") || col.equals("b") || col.equals("g") || col.equals("w"))
+        if(col.equals("red") || col.equals("yellow") || col.equals("blue") || col.equals("green") || col.equals("wild"))
             return true;
         else
             return false; 
@@ -235,7 +241,7 @@ public class Uno {
         System.out.println("\t\t6. If a reverse is played, the next player's turn will be skipped");
         System.out.println("\t\t7. If a +2 is played, the next player must draw 2 cards and their turn will be skipped");
         System.out.println("\t\t8. If a wild card is played, the current player must choose a new color and their turn is over");
-        System.out.println("\t\t9. If a wild +4 card is played, the current player must choose a new color, the next player must draw 4 cards, and the next player's turn is skipped");
+        System.out.println("\t\t9. If a wild +4 card is played, the current player must choose a new color, the next player must draw 4 cards, and the next player's turn is skipped\n");
     }
     
     public void play(){  
@@ -261,46 +267,39 @@ public class Uno {
             turn=!turn;
             return;
         }
-        if(turn){
-            for(int i = 0; i < playerHand.size(); i++){
-                String cardCol = playerHand.get(i).getColor();
-                String cardNum = "" + playerHand.get(i).getNumber();
-                if(playerHand.get(i).getColor().substring(0,1).equals(p.substring(0,1)) && playerHand.get(i).getNumber().equals(p.substring(1)))
-            }
-        }
-        Card played = createTempCard(p); 
-        if(turn){
-            while(!checkValidCard(played, playerHand)){
-                System.out.println("Error. please enter a valid card.");
 
+        Card played = findCardInHand(p.substring(0,1), p.substring(1));
+        if(turn){
+            while(played == null || !checkValidCard(played, playerHand)){
+                System.out.println("That card is not in your deck or is an invalid play.");
                 System.out.println("\nWhat card would you like to play? (ex: r7 or draw)");
-            p = temp.nextLine();
-            
-            if(p.equalsIgnoreCase("draw")){
-                drawCard();
-                turn=!turn;
-                return;
-            }
-            played = createTempCard(p); 
+                p = temp.nextLine();
+                if(p.equalsIgnoreCase("draw")){
+                    drawCard();
+                    turn=!turn;
+                    return;
+                }
+                played = findCardInHand(p.substring(0,1), p.substring(1));
             }
         }
         else{
-            while(!checkValidCard(played, player2Hand)){
-                System.out.println("Error. please enter a valid card.");
+            while(played == null || !checkValidCard(played, player2Hand)){
+                System.out.println("That card is not in your deck or is an invalid play.");
                 System.out.println("\nWhat card would you like to play? (ex: r7 or draw)");
-                String h = temp.nextLine();
-            
-                if(h.equalsIgnoreCase("draw")){
+                p = temp.nextLine();
+                if(p.equalsIgnoreCase("draw")){
                     drawCard();
+                    turn=!turn;
+                    return;
                 }
-                played = createTempCard(h); 
-            } 
+                played = findCardInHand(p.substring(0,1), p.substring(1));
+            }
         }
 
         //now the card is a valid card in the hand
         removeCard(played);
-        if(validPlay(played)){
         //check what type of card it is and deal with it accordingly 
+            center = played;
             if(played.getColor().equals("wild")){
                 Scanner myS= new Scanner(System.in);
                 System.out.println("\nWhat color would you like to change it to? ");
@@ -311,6 +310,7 @@ public class Uno {
                     colTemp= myS.nextLine();
                 }
                 changeColor(colTemp); 
+                System.out.println("Color is now " + center.getColor()); 
 
                 if(played.getNumber()==14){
                     turn = !turn;
@@ -318,12 +318,34 @@ public class Uno {
                         drawCard();
                     }
                     turn = !turn;
+                    System.out.println("You just drew 4 cards.");
                 }
-            }
-        center= played; 
+            } 
         System.out.println("\nCard " + played.toString() + " was played!");
         
         changeCurrentPerson(); 
+        
+    }
+
+    private Card findCardInHand(String c, String n){
+        if(turn){
+            for(int i = 0; i < playerHand.size(); i++){
+                String cardCol = playerHand.get(i).getColor();
+                String cardNum = "" + playerHand.get(i).getNumber();
+                if(cardCol.substring(0,1).equals(c) && cardNum.equals(n)){
+                    return playerHand.get(i);
+                }
+            }
         }
+        else{
+            for(int i = 0; i < player2Hand.size(); i++){
+                String cardCol = player2Hand.get(i).getColor();
+                String cardNum = "" + player2Hand.get(i).getNumber();
+                if(cardCol.substring(0,1).equals(c) && cardNum.equals(n)){
+                    return player2Hand.get(i);
+                }
+            }
+        }
+        return null;
     }
 }

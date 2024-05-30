@@ -1,5 +1,6 @@
+import java.io.IOException;
 public class Card{
-    private String curColor; //red, blue, green, yellow, white
+    private String curColor; //red, blue, green, yellow, wild
     private int curNum; //0-9, 10==skip, 11== change direction, 12== +2, 13==change color, 14== change color +4
 
 
@@ -30,4 +31,5 @@ public class Card{
         return curColor + " "  + curNum; 
     }
 
+    
 }

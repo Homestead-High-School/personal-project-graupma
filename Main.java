@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.*;
 public class Main {
     public static void main(String[] args){
@@ -6,6 +7,9 @@ public class Main {
         Uno game = new Uno();
         System.out.println("Welcome to Uno! The rules are as follows:");
         game.rules();
+
+      
+      
 
         //asks the user if they are ready to begin the game, but starts the game regardless of their answer
         Scanner input = new Scanner(System.in);
@@ -19,6 +23,8 @@ public class Main {
         System.out.println("Commencing sequence...");
         while(!game.checkWin()){
             game.play();
+            //flush
+            clrscl
         }
         if(game.getTurn()){
             System.out.println("Player 1 wins!");
@@ -43,7 +49,7 @@ public class Main {
             nGame.rules();
             while(!nGame.checkWin()){
                 nGame.play();
-                
+                System.out.flush();
             }
             if(nGame.getTurn()){
                 System.out.println("Player 1 wins!");
@@ -56,7 +62,7 @@ public class Main {
         //reasks the user if they would like to play again, and keeps asking until they enter either "y" or "n"
         System.out.println("Would you like to play again (y/n)? ");
         ready = input.nextLine();
-        while(!ready.toLowerCase().equals("y") && !ready.toLowerCase().equals("n")){
+        while(!ready.toLowerCase().equals("y") || !ready.toLowerCase().equals("n")){
             System.out.println("Invalid option. Would you like to play again (y/n)? ");
             ready = input.nextLine();
         }
