@@ -3,6 +3,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args){
 
+
         //creates an instance of the uno game and prints the rules of uno
         Uno game = new Uno();
         System.out.println("Welcome to Uno! The rules are as follows:");
@@ -23,14 +24,12 @@ public class Main {
         System.out.println("Commencing sequence...");
         while(!game.checkWin()){
             game.play();
-            //flush
-            clrscl
         }
         if(game.getTurn()){
-            System.out.println("Player 1 wins!");
+            System.out.println("Player 2 wins!");
         }
         else{
-            System.out.println("Player 2 wins!");
+            System.out.println("Player 1 wins!");
         }
 
         //asks the user if they would like to play again, and keeps asking until the option they enter is equal to either "y" or "n"
@@ -49,13 +48,12 @@ public class Main {
             nGame.rules();
             while(!nGame.checkWin()){
                 nGame.play();
-                System.out.flush();
             }
             if(nGame.getTurn()){
-                System.out.println("Player 1 wins!");
+                System.out.println("Player 2 wins!");
             }
             else{
-                System.out.println("Player 2 wins!");
+                System.out.println("Player 1 wins!");
             }
         }
 

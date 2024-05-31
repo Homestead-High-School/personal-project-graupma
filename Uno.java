@@ -324,7 +324,6 @@ public class Uno {
         System.out.println("\nCard " + played.toString() + " was played!");
         
         changeCurrentPerson(); 
-        
     }
 
     private Card findCardInHand(String c, String n){
